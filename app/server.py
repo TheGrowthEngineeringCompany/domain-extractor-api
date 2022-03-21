@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, Response, status
 import tldextract
+from app.utilities import sanitize_url
 
 app = FastAPI()
 
@@ -24,7 +25,10 @@ async def root():
 
 @app.get('/extract')
 async def domain(url: str, response: Response):
+    url = sanitize_url(url)
+    
     extraction = tldextract.extract(url)
+    
 
     subdomain = extraction.subdomain
     domain = extraction.domain
