@@ -13,6 +13,10 @@ Richard & Axel - the Growth Engineering Team @ Paddle.com
 
 Custom Code block: https://gist.github.com/thesnappingdog/64ac3c4207fc539e3e44e06afae6aa69
 
-## Tests
+## Commands
 
+Dev
+uvicorn app.server:app --reload
+
+Tests
 python -m pytest tests/

@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI, Request, Response, status
 import tldextract
-from app.utilities import sanitize_url
+from app.utilities import sanitize_url, load_freemail_blacklist
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -16,9 +16,7 @@ DOMAIN_PROVIDERS = [
     'netlify.app'
 ]
 
-FREEMAIL_PROVIDERS = [
-    'gmail'
-]
+FREEMAIL_PROVIDERS = load_freemail_blacklist()
 
 
 @app.get("/")
@@ -49,7 +47,7 @@ async def domain(url: str, request: Request,response: Response):
     if 'www.' in subdomain:
         subdomain = subdomain.split('www.', 1)[1]
     
-    if domain in FREEMAIL_PROVIDERS:
+    if extraction.registered_domain in FREEMAIL_PROVIDERS:
         freemail_provider = True
 
     if extraction.registered_domain in DOMAIN_PROVIDERS:
