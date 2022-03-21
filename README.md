@@ -6,3 +6,13 @@ Built with tldrextract + FastAPI + Past headaches with data cleanliness.
 
 Much love,
 Richard & Axel - the Growth Engineering Team @ Paddle.com
+
+## Example Uses:
+
+### HubSpot Workflows + Operations Hub
+
+Custom Code block: https://gist.github.com/thesnappingdog/64ac3c4207fc539e3e44e06afae6aa69
+
+## Tests
+
+python -m pytest tests/

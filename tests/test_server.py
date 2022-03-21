@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
-from server import app
+from app.server import app
+
 
 client = TestClient(app)
 
@@ -16,7 +17,6 @@ def test_full_url():
     assert response.status_code == 200
     assert response.json() == {
         "url": f"{url}",
-        "status": 200,
         "domain": f"paddle.com",
         "freemail_provider": False
     }
@@ -28,7 +28,6 @@ def test_domain_provider():
     assert response.status_code == 200
     assert response.json() == {
         "url": f"{url}",
-        "status": 200,
         "domain": f"paddle.herokuapp.com",
         "freemail_provider": False
     }
@@ -39,7 +38,6 @@ def test_freemail_provider():
     assert response.status_code == 200
     assert response.json() == {
         "url": f"{url}",
-        "status": 200,
         "domain": f"{url}",
         "freemail_provider": True
     }

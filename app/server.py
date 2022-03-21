@@ -1,9 +1,15 @@
 
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, Request, Response, status
 import tldextract
 from app.utilities import sanitize_url
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 DOMAIN_PROVIDERS = [
     'herokuapp.com',
@@ -15,16 +21,15 @@ FREEMAIL_PROVIDERS = [
 ]
 
 
-REGEX_URL = """(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))"""
-
-
 @app.get("/")
-async def root():
+@limiter.limit("5/minute")
+async def root(request: Request):
     return {"message": "Hello World"}
 
 
 @app.get('/extract')
-async def domain(url: str, response: Response):
+@limiter.limit("5/minute")
+async def domain(url: str, request: Request,response: Response):
     url = sanitize_url(url)
     
     extraction = tldextract.extract(url)
@@ -50,7 +55,6 @@ async def domain(url: str, response: Response):
     if extraction.registered_domain in DOMAIN_PROVIDERS:
         return {
             "url": f"{url}",
-            "status": 200,
             "domain": f"{subdomain}.{domain}.{suffix}",
             "freemail_provider": freemail_provider
 
@@ -58,7 +62,6 @@ async def domain(url: str, response: Response):
     
     return {
         "url": f"{url}",
-        "status": 200,
         "domain": f"{extraction.registered_domain}",
         "freemail_provider": freemail_provider
     }
