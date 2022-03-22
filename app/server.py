@@ -13,7 +13,16 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 DOMAIN_PROVIDERS = [
     'herokuapp.com',
-    'netlify.app'
+    'netlify.app',
+    'web.app',
+    'firebaseapp.com',
+    'heroku.com',
+    'hey.com',
+    'netlify.com',
+    'netlify.app',
+    'mail.ru',
+    'vk.com',
+    'carrd.co'
 ]
 
 FREEMAIL_PROVIDERS = load_freemail_blacklist()
