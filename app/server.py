@@ -26,7 +26,7 @@ async def root(request: Request):
 
 
 @app.get('/extract')
-@limiter.limit("5/minute")
+@limiter.limit("60/minute")
 async def domain(url: str, request: Request,response: Response):
     url = sanitize_url(url)
     

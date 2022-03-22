@@ -4,19 +4,34 @@ A simple API you can spin up on Heroku, AWS Lambda that takes in a raw URL, and 
 
 Built with tldrextract + FastAPI + Past headaches with data cleanliness.
 
+Test it out on a rate-limited, free-heroku app:
+
+GET
+https://url-to-domain.herokuapp.com/extract?url=http://wwW.paddle.com/en?utm_campaign=whatever&hello=world
+
 Much love,
 Richard & Axel - the Growth Engineering Team @ Paddle.com
 
-## Example Uses:
+## Examples:
 
-### HubSpot Workflows + Operations Hub
+[see examples folder](../blob/main/examples)
 
-Custom Code block: https://gist.github.com/thesnappingdog/64ac3c4207fc539e3e44e06afae6aa69
+- n8n workflow
+- HubSpot Workflows
 
-## Commands
+## Setup
 
-Dev
+To run in DEV mode:
+
+```
+python3 -m venv venv
+source venv/bin.activate
+pip install
 uvicorn app.server:app --reload
+```
 
-Tests
-python -m pytest tests/
+Run tests with `python -m pytest tests/`
+
+## Deploy to Heroku
+
+Necessary Config Vars = PORT

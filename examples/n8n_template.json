@@ -1,0 +1,92 @@
+{
+  "name": "DOMAIN EXTRACTION EXAMPLE",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "18b24bf6-2cb8-4453-b731-510c34bbda16",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        180
+      ],
+      "webhookId": "18b24bf6-2cb8-4453-b731-510c34bbda16"
+    },
+    {
+      "parameters": {
+        "url": "https://url-to-domain.herokuapp.com/extract",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "url",
+              "value": "={{$node[\"Webhook\"].json[\"body\"][\"website_url\"]}}"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        360,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://mycustomwebhook.io/1234567",
+        "options": {}
+      },
+      "name": "Send Somewhere",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        660,
+        180
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send Somewhere",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": 1008
+}
