@@ -7,10 +7,10 @@ Built with tldrextract + FastAPI + Past headaches with data cleanliness.
 Test it out on a rate-limited, free-heroku app:
 
 GET
-https://url-to-domain.herokuapp.com/extract?url=http://wwW.paddle.com/en?utm_campaign=whatever&hello=world
+https://domain-extractor.reconfigured.io/extract?url=http://wwW.paddle.com/en?utm_campaign=whatever&hello=world
 
 Much love,
-Richard & Axel - the Growth Engineering Team @ Paddle.com
+@thesnappingdog
 
 ## Examples:
 
