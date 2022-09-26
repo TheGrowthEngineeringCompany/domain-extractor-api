@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+env:
+  PROJECT_ID: 'reconfigured-oss'
+  SERVICE: 'domain-extractor-api'
+  REGION: 'europe-west1'
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -20,3 +25,26 @@ jobs:
           cache: 'pip' # caching pip dependencies
       - run: pip install -r requirements.txt
       - run: python -m pytest
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+    needs: run-tests
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: '${{ secrets.RCOSS_WIF_PROVIDER }}'
+          service_account: '${{ secrets.RCOSS_WIF_SERVICE_ACCOUNT }}'
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          source: ./
