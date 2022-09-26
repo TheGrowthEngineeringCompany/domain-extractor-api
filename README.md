@@ -31,7 +31,3 @@ uvicorn app.server:app --reload
 ```
 
 Run tests with `python -m pytest tests/`
-
-## Deploy to Heroku
-
-Necessary Config Vars = PORT
