@@ -2,14 +2,8 @@
 from fastapi import FastAPI, Request, Response, status
 import tldextract
 from app.utilities import sanitize_url, load_freemail_blacklist
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 
-limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 DOMAIN_PROVIDERS = [
     'herokuapp.com',
@@ -29,18 +23,16 @@ FREEMAIL_PROVIDERS = load_freemail_blacklist()
 
 
 @app.get("/")
-@limiter.limit("5/minute")
 async def root(request: Request):
     return {"message": "Hello World"}
 
 
 @app.get('/extract')
-@limiter.limit("60/minute")
 async def domain(url: str, request: Request,response: Response):
     url = sanitize_url(url)
-    
+
     extraction = tldextract.extract(url)
-    
+
 
     subdomain = extraction.subdomain
     domain = extraction.domain
@@ -55,7 +47,7 @@ async def domain(url: str, request: Request,response: Response):
 
     if 'www.' in subdomain:
         subdomain = subdomain.split('www.', 1)[1]
-    
+
     if extraction.registered_domain in FREEMAIL_PROVIDERS:
         freemail_provider = True
 
@@ -65,8 +57,8 @@ async def domain(url: str, request: Request,response: Response):
             "domain": f"{subdomain}.{domain}.{suffix}",
             "freemail_provider": freemail_provider
 
-        }   
-    
+        }
+
     return {
         "url": f"{url}",
         "domain": f"{extraction.registered_domain}",
