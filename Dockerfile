@@ -7,4 +7,4 @@ COPY . ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD exec gunicorn --bind :$PORT --workers 8 --timeout 0 --worker-class uvicorn.workers.UvicornWorker app.server:app
+CMD exec gunicorn --bind :$PORT --workers 12 --timeout 0 --worker-class uvicorn.workers.UvicornWorker app.server:app
