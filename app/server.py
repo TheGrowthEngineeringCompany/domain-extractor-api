@@ -26,6 +26,10 @@ FREEMAIL_PROVIDERS = load_freemail_blacklist()
 async def root(request: Request):
     return {"message": "Hello World"}
 
+@app.get("/loaderio-e018bfba64138d4ebe381481dc8af392.txt")
+def loaderio_verify():
+    return 'loaderio-e018bfba64138d4ebe381481dc8af392'
+
 
 @app.get('/extract')
 async def domain(url: str, request: Request,response: Response):
