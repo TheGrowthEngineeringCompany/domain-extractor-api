@@ -4,7 +4,7 @@ A simple API you can spin up on Heroku, AWS Lambda that takes in a raw URL, and 
 
 Built with tldrextract + FastAPI + Past headaches with data cleanliness.
 
-Test it out on a rate-limited, free-heroku app:
+Test it out on:
 
 GET
 https://domain-extractor.reconfigured.io/extract?url=http://wwW.paddle.com/en?utm_campaign=whatever&hello=world
